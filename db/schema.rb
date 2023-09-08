@@ -17,7 +17,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_02_102018) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "password_digest"
-    t.index "\"emai\"", name: "index_users_on_emai", unique: true
+    t.index ["email"], name: "index_users_on_email", unique: true
   end
 
 end
