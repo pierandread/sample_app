@@ -1,11 +1,16 @@
 // menu manipulation
 
-// add toggle listeners to listen for clicks
-document.addEventListener("turbo:load", function () {
-  let account = document.querySelector("#account");
-  account.addEventListener("click", function (event) {
+// add toggle listeners
+function addToggleListener(selected_id, menu_id, toggle_class) {
+  let selected_item = document.querySelector(`#${selected_id}`);
+  selected_item.addEventListener("click", function (event) {
     event.preventDefault();
-    let menu = document.querySelector("#dropdown-menu");
-    menu.classList.toggle("active");
+    let menu = document.querySelector(`#${menu_id}`);
+    menu.classList.toggle(toggle_class);
   });
+}
+
+document.addEventListener("turbo:load", function () {
+  addToggleListener("hamburger", "navbar-menu", "collapse");
+  addToggleListener("account", "dropdown-menu", "active");
 });
