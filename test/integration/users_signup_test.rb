@@ -7,15 +7,14 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     get signup_path
     assert_no_difference 'User.count' do
       post users_path, params: { user: { name: '',
-                                        email: 'not@valid',
-                                        password: 'asdasd',
-                                        password_confirmation: 'asd123' } }
+                                         email: 'not@valid',
+                                         password: 'asdasd',
+                                         password_confirmation: 'asd123' } }
     end
     assert_response :unprocessable_entity
     assert_template 'users/new'
     assert_select 'div#error_explanation'
     assert_select 'div.alert-danger'
-
   end
 
   test 'valid signup information' do
@@ -27,6 +26,6 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     end
     follow_redirect!
     assert_template 'users/show'
-    assert_not flash[:error]
+    assert is_logged_in?
   end
 end
