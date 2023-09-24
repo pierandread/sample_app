@@ -32,6 +32,8 @@ class User < ApplicationRecord
   # true if given token matches the digest
   # remember_digest same as self.remember_digest is created automatically by Active Record based on name of db column
   def authenticated?(remember_token)
+    return false if remember_digest.nil?
+
     BCrypt::Password.new(remember_digest).is_password?(remember_token)
   end
 
