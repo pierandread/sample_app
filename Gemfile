@@ -9,6 +9,7 @@ gem "rails", "~> 7.0.7"
 # used by has_secure_password
 gem "bcrypt"
 
+
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
 
