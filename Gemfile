@@ -66,8 +66,6 @@ group :development do
 
   gem "rubocop"
 
-  gem "pry"
-
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   # gem "rack-mini-profiler"
 
@@ -90,5 +88,5 @@ group :test do
 end
 
 group :production do
-  gem "pg"
+  # gem "pg"
 end

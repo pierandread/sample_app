@@ -174,7 +174,6 @@ GEM
     parser (3.2.2.3)
       ast (~> 2.4.1)
       racc
-    pg (1.5.3)
     pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -310,7 +309,6 @@ DEPENDENCIES
   jbuilder
   minitest
   minitest-reporters
-  pg
   pry
   puma (~> 5.0)
   rails (~> 7.0.7)
