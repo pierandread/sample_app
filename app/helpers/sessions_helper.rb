@@ -1,8 +1,13 @@
+# frozen_string_literal: true
+
 module SessionsHelper
   # login given user
   def log_in(user)
     # session is saved in cookie encrypted
     session[:user_id] = user.id
+    # Guards against session replay attacks
+    # https://bit.ly/33UvK0w
+    session[:session_token] = user.session_token
   end
 
   # remember user in persistent session
@@ -15,10 +20,11 @@ module SessionsHelper
   # returns current loggedin user if any
   def current_user
     if (user_id = session[:user_id])
-      @current_user ||= User.find_by(id: session[:user_id])
+      user = User.find_by(id: user_id)
+      @current_user = user if user && session[:session_token] == user.session_token
     elsif (user_id = cookies.encrypted[:user_id])
       user = User.find_by(id: user_id)
-      if user && user.authenticated?(cookies[:remember_token])
+      if user&.authenticated?(cookies[:remember_token])
         log_in user
         @current_user = user
       end
