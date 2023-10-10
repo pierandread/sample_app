@@ -1,11 +1,16 @@
 <% provide(:title, 'All users') %>
 <h1>All users</h1>
 
+<%= will_paginate %>
+
 <ul class="users">
-  <% @users.each do |user| %>
-  <li>
-    <%= gravatar_for user, size: 50 %>
-    <%= link_to user.name, user %>
-  </li>
-  <% end %>
+<!--  rails automatically infer that its a list and do the rest-->
+  <%= render @users %>
+
+  <%# @users.each do |user| %>
+<!--    rails will looks for a partiar _user.html.erb-->
+    <%#= render user %>
+  <%# end %>
 </ul>
+
+<%= will_paginate %>
