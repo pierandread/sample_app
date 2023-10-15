@@ -40,15 +40,27 @@ class User < ApplicationRecord
   end
 
   # true if given token matches the digest
-  # remember_digest same as self.remember_digest is created automatically by Active Record based on name of db column
-  def authenticated?(remember_token)
-    return false if remember_digest.nil?
+  # previous version: remember_digest same as self.remember_digest is created automatically by Active Record based on name of db column
+  def authenticated?(attribute, token)
+    # we can omit self.send because we are inside User model
+    digest = send("#{attribute}_digest")
+    return false if digest.nil?
 
-    BCrypt::Password.new(remember_digest).is_password?(remember_token)
+    BCrypt::Password.new(digest).is_password?(token)
   end
 
   def forget
     update_attribute(:remember_digest, nil)
+  end
+
+  # Activate account
+  def activate
+    # no self because optional in Model
+    update_columns(activated: true, activated_at: Time.zone.now)
+   end
+
+  def send_activation_email
+    UserMailer.account_activation(self).deliver_now
   end
 
   private
