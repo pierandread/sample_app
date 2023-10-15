@@ -30,6 +30,7 @@ class UsersIndexAdminTest < UsersIndexAdmin
     first_page_of_users = User.paginate(page: 1)
     first_page_of_users.each do |user|
       next unless user.activated?
+
       assert_select 'a[href=?]', user_path(user), text: user.name
       assert_select 'a[href=?]', user_path(user), text: 'delete' unless user == @admin
     end
