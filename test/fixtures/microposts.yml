@@ -1,0 +1,19 @@
+orange:
+  content: "I just ate an orange"
+  created_at: <%= 10.minutes.ago %>
+  user: :michael
+
+tau_manifesto:
+  content: "marketing in the book mamma mia"
+  created_at: <%= 3.years.ago %>
+  user: :michael
+
+cat_video:
+  content: "Cat video, so original.."
+  created_at: <%= 2.hours.ago %>
+  user: :michael
+
+most_recent:
+  content: "Im speed"
+  created_at: <%= Time.zone.now %>
+  user: :michael
