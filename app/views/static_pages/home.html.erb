@@ -1,13 +1,5 @@
-<div class="center jumbotron">
-  <h1>welcome to the Sample App</h1>
-  <h2>
-    This is the home page for the
-    <a href="https://web.whatsapp.com/">whatsapp.com</a>
-  </h2>
-  <%= link_to "Sign up now!", signup_path, class: "btn btn-lg btn-primary" %>
-</div>
-
-<%= link_to image_tag("rails.svg", alt: "Rails logo", width: "200"),
-            "https://google.com"%>
-
-
+<% if logged_in? %>
+  <%= render 'shared/home_logged_in' %>
+<% else %>
+  < <%= render 'shared/welcome_page' %>
+<% end %>
