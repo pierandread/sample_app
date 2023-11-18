@@ -6,6 +6,10 @@ ruby "3.2.2"
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.0.7"
 
+gem "active_storage_validations"
+
+gem "image_processing"
+
 # used by has_secure_password
 gem "bcrypt"
 
@@ -94,5 +98,7 @@ group :test do
 end
 
 group :production do
-  # gem "pg"
+  # Commenting out because dont want to install pg on mac
+  # gem "pg", "1.3.5"
+  gem "aws-sdk-s3", "1.114.0", require: false
 end
