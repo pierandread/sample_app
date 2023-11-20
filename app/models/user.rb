@@ -2,6 +2,9 @@
 
 class User < ApplicationRecord
   has_many :microposts, dependent: :destroy
+  #  pag 760
+  # if Calvin is following Hobbes but not vice versa, Calvin has an active relationship with Hobbes and Hobbes has a passive relationship with Calvin.
+  has_many :active_relationships, class_name: 'Relationship', foreign_key: 'follower_id', dependent: :destroy
 
   attr_accessor :remember_token, :activation_token, :reset_token
 
@@ -80,7 +83,7 @@ class User < ApplicationRecord
   end
 
   def feed
-    Micropost.where("user_id = ?", id)
+    Micropost.where('user_id = ?', id)
   end
 
   private
