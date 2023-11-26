@@ -1,24 +1,8 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is the sample application of the
+[Ruby on Rails Tutorial:
+Learn Web Development with Rails](https://www.railstutorial.org/)
+created following the book.
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+For any extra information refer to the original [README](https://github.com/learnenough/rails_tutorial_sample_app_7th_ed/blob/main/README.md). 
