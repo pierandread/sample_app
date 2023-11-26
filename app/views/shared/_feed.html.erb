@@ -1,5 +1,6 @@
 <% if @feed_items.any? %>
   <ol class="microposts">
+    <%# feed_item is of class Micropost, so it will load the _micropost.html.erb %>
     <%= render @feed_items %>
   </ol>
   <%= will_paginate @feed_items, params: {controller: :static_pages, action: :home} %>

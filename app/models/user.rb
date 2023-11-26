@@ -68,7 +68,7 @@ class User < ApplicationRecord
   def activate
     # no self because optional in Model
     update_columns(activated: true, activated_at: Time.zone.now)
-   end
+  end
 
   def send_activation_email
     UserMailer.account_activation(self).deliver_now
@@ -89,8 +89,31 @@ class User < ApplicationRecord
   end
 
   def feed
-    Micropost.where('user_id = ?', id)
+    # 1st
+    # Micropost.where('user_id IN (?) OR user_id = ?', following_ids, id)
+    # 2nd
+    following_ids = 'SELECT followed_id FROM relationships WHERE follower_id= :user_id'
+    # Micropost.where("user_id IN (#{following_ids}) OR user_id = :user_id", user_id: id)
+    #          .includes(:user, image_attachment: :blob)
+    # 3rd
+    part_of_feed = "relationships.follower_id = :id or microposts.user_id = :id"
+    Micropost.left_outer_joins(user: :followers)
+             .where(part_of_feed, {id: id}).distinct
+             .includes(:user, image_attachment: :blob)
   end
+
+  # 1st irb(main):001> User.first.feed
+  # User Load (0.0ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT ?  [["LIMIT", 1]]
+  # User Pluck (0.1ms)  SELECT "users"."id" FROM "users" INNER JOIN "relationships" ON "users"."id" = "relationships"."followed_id" WHERE "relationships"."follower_id" = ?  [["follower_id", 1]]
+  # Micropost Load (1.3ms)  SELECT "microposts".* FROM "microposts" WHERE (user_id IN (3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51) OR user_id = 1) ORDER BY "microposts"."created_at" DESC
+  # =>
+  # 2nd without include User Load (0.0ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT ?  [["LIMIT", 1]]
+  #   Micropost Load (0.4ms)  SELECT "microposts".* FROM "microposts" WHERE (user_id IN (SELECT followed_id FROM relationships WHERE follower_id= 1) OR user_id = 1) ORDER BY "microposts"."created_at" DESC
+  # =>
+  # 3rd (only third include DISTINCT for this  SELECT DISTINCT)
+  # irb(main):002> User.last.feed
+  #   User Load (0.1ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" DESC LIMIT ?  [["LIMIT", 1]]
+  #   Micropost Load (0.3ms) SELECT DISTINCT "microposts".* FROM "microposts" LEFT OUTER JOIN "users" ON "users"."id" = "microposts"."user_id" LEFT OUTER JOIN "relationships" ON "relationships"."followed_id" = "users"."id" LEFT OUTER JOIN "users" "followers_users" ON "followers_users"."id" = "relationships"."follower_id" WHERE (relationships.follower_id = 101 or microposts.user_id = 101) ORDER BY "microposts"."created_at" DESC
 
   def follow(other_user)
     following << other_user unless self == other_user
